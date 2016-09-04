@@ -1,16 +1,3 @@
-/*
-**  PROGRAM: Mandelbrot area
-**
-**  PURPOSE: Program to compute the area of a  Mandelbrot set.
-**           Correct answer should be around 1.510659.
-**           WARNING: this program may contain errors
-**
-**  USAGE:   Program runs without input ... just run the executable
-**            
-**  HISTORY: Written:  (Mark Bull, August 2011).
-**           Changed "comples" to "d_comples" to avoid collsion with 
-**           math.h complex type (Tim Mattson, September 2011)
-*/
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -36,10 +23,6 @@ int main(){
    int i, j;
    double area, error, eps  = 1.0e-5;
 
-
-//   Loop over grid of points in the complex plane which contains the Mandelbrot set,
-//   testing each point to see whether it is inside or outside the set.
-
 #pragma omp parallel for default(shared) firstprivate(eps) private(c,j)
    for (i=0; i<NPOINTS; i++) {
      for (j=0; j<NPOINTS; j++) {
@@ -48,9 +31,7 @@ int main(){
        testpoint(c);
      }
    }
-
-// Calculate area of set and error estimate and output the results
-   
+  
 area=2.0*2.5*1.125*(double)(NPOINTS*NPOINTS-numoutside)/(double)(NPOINTS*NPOINTS);
    error=area/(double)NPOINTS;
 
@@ -61,8 +42,6 @@ area=2.0*2.5*1.125*(double)(NPOINTS*NPOINTS-numoutside)/(double)(NPOINTS*NPOINTS
 
 void testpoint(struct d_complex c){
 
-// Does the iteration z=z*z+c, until |z| > 2 when point is known to be outside set
-// If loop count reaches MAXITER, point is considered to be inside the set
 
        struct d_complex z;
        int iter;
